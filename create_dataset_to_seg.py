@@ -1,4 +1,5 @@
 from pydarknet import Detector, Image
+import math
 import cv2
 import sys
 
@@ -16,9 +17,9 @@ def crop(img_path):
   # print(results)
   
   # coloque o valor do cont referente a ultima imagem + 1
-  count = 84 
+  count = 116
   #regulador de tamanho da imagem gerada 
-  const = 100
+  const = 20
   for cat, score, bounds in results:
       
       filename = "./cropped_imgs/img{}.jpg".format(count)
@@ -26,14 +27,14 @@ def crop(img_path):
       x, y, w, h = bounds
       
       try:
-        crop_img = img[int(y - const):int(y + const +h), int(x - const):int(x + const + w)]
+        crop_img = img[math.floor(y):math.floor(y + h), math.floor(x):math.floor(x + w)]
       except:
         print("imagem não formada")
       else:
         cv2.imwrite(filename, crop_img)
         count = count + 1 
       
-    print("finish")
+  print("finish")
 
 if __name__ == "__main__":
   try:
